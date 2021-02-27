@@ -1,0 +1,4 @@
+github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e h1:1r7pUrabqp18hOBcwBwiTsbnFeTZHV9eER/QT5JVZxY=
+github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e/go.mod h1:cIg4eruTrX1D+g88fzRXU5OdNfaM+9IcxsU14FzY7Hc=
+github.com/ifritJP/LuneScript v1.1.12 h1:IeGPQwQ6uKbdA9u2oKQtl1hyuB86cpILvWz6UBPvjfs=
+github.com/ifritJP/LuneScript v1.1.12/go.mod h1:7FObwVFVRwyN431aH9AFv6t5XQE05d2Sy2bKJlmA5VU=

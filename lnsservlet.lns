@@ -1,0 +1,37 @@
+pub interface inStream {
+   pub fn read(size:int):str!,str;
+   pub fn readAll():str!,str;
+}
+
+pub interface outStream {
+   pub fn write(bin:str):str;
+}
+
+pub form writerFunc( stream:outStream );
+
+pub class ResponseInfo {
+   pub let mut StatusCode:int;
+   pub let mut Header:Map<str,List<str>>;
+   pub let mut Writer:writerFunc!;
+   pub let mut Txt:str!;
+
+   pub fn __init() {
+      self.StatusCode = 200;
+      self.Header = {};
+      self.Writer = nil;
+      self.Txt = "";
+   }
+}
+
+pub class RequestInfo {
+   pub let Method:str;
+   pub let Url:str;
+   pub let Header:Map<str,List<str>>;
+   pub let mut Reader:inStream;
+}
+
+pub form handlerFunc( req:RequestInfo ) : ResponseInfo;
+pub class HandlerInfo {
+    pub let Path:str;
+    pub let Handler: handlerFunc;
+}

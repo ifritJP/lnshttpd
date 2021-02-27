@@ -1,0 +1,23 @@
+import lnshttpd.lnsservlet;
+
+class goInStream extend (lnsservlet.inStream) {
+   let reader:stem;
+   pub fn read(size:int):str!,str {
+      return nil,"";
+   }
+   pub fn readAll():str!,str {
+      return nil,"";
+   }
+}
+
+class goOutStream extend (lnsservlet.outStream) {
+   let writer:stem;
+   pub fn write(bin:str):str {
+      return "";
+   }
+}
+
+{
+   let _ = new goInStream(0);
+   let _ = new goOutStream(0);
+}
