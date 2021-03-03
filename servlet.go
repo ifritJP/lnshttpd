@@ -25,7 +25,7 @@ func handleMain(
     }
 }
 
-func Start( port int, infoList *LnsList ) {
+func Start( port int, infoList *LnsList, hostingList *LnsList ) {
     log.Print( "start -- ", port )
 
     
@@ -36,6 +36,23 @@ func Start( port int, infoList *LnsList ) {
             func ( resp http.ResponseWriter, req *http.Request ) {
                 handleMain( resp, req, handlerInfo.Handler )
             } )
+    }
+    for _, info := range( hostingList.Items ) {
+        hostingInfo := info.(*Lnsservlet_HostingInfo)
+
+        localPath := hostingInfo.LocalPath
+        if localPath[ len(localPath) - 1 ] != '/' {
+            localPath += "/"
+        }
+        urlPath := hostingInfo.UrlPath
+        if urlPath[ len( urlPath ) - 1 ] != '/' {
+            urlPath += "/"
+        }
+        
+        log.Printf( "hosting: %s: %s", localPath, urlPath );
+        http.Handle(
+            urlPath,
+            http.StripPrefix( urlPath, http.FileServer(http.Dir( localPath ))))
     }
     
     log.Fatal(http.ListenAndServe( fmt.Sprintf( ":%d", port ), nil))

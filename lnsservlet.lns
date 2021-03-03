@@ -35,3 +35,8 @@ pub class HandlerInfo {
     pub let Path:str;
     pub let Handler: handlerFunc;
 }
+
+pub class HostingInfo {
+   pub let LocalPath:str;
+   pub let UrlPath:str;
+}

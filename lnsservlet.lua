@@ -158,4 +158,24 @@ function HandlerInfo:__init( Path, Handler )
 end
 
 
+local HostingInfo = {}
+_moduleObj.HostingInfo = HostingInfo
+function HostingInfo.setmeta( obj )
+  setmetatable( obj, { __index = HostingInfo  } )
+end
+function HostingInfo.new( LocalPath, UrlPath )
+   local obj = {}
+   HostingInfo.setmeta( obj )
+   if obj.__init then
+      obj:__init( LocalPath, UrlPath )
+   end
+   return obj
+end
+function HostingInfo:__init( LocalPath, UrlPath )
+
+   self.LocalPath = LocalPath
+   self.UrlPath = UrlPath
+end
+
+
 return _moduleObj

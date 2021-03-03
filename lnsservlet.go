@@ -157,6 +157,45 @@ func (self *Lnsservlet_HandlerInfo) InitLnsservlet_HandlerInfo(arg1 string, arg2
     self.Handler = arg2
 }
 
+// declaration Class -- HostingInfo
+type Lnsservlet_HostingInfoMtd interface {
+}
+type Lnsservlet_HostingInfo struct {
+    LocalPath string
+    UrlPath string
+    FP Lnsservlet_HostingInfoMtd
+}
+func Lnsservlet_HostingInfo2Stem( obj LnsAny ) LnsAny {
+    if obj == nil {
+        return nil
+    }
+    return obj.(*Lnsservlet_HostingInfo).FP
+}
+type Lnsservlet_HostingInfoDownCast interface {
+    ToLnsservlet_HostingInfo() *Lnsservlet_HostingInfo
+}
+func Lnsservlet_HostingInfoDownCastF( multi ...LnsAny ) LnsAny {
+    if len( multi ) == 0 { return nil }
+    obj := multi[ 0 ]
+    if ddd, ok := multi[ 0 ].([]LnsAny); ok { obj = ddd[0] }
+    work, ok := obj.(Lnsservlet_HostingInfoDownCast)
+    if ok { return work.ToLnsservlet_HostingInfo() }
+    return nil
+}
+func (obj *Lnsservlet_HostingInfo) ToLnsservlet_HostingInfo() *Lnsservlet_HostingInfo {
+    return obj
+}
+func NewLnsservlet_HostingInfo(arg1 string, arg2 string) *Lnsservlet_HostingInfo {
+    obj := &Lnsservlet_HostingInfo{}
+    obj.FP = obj
+    obj.InitLnsservlet_HostingInfo(arg1, arg2)
+    return obj
+}
+func (self *Lnsservlet_HostingInfo) InitLnsservlet_HostingInfo(arg1 string, arg2 string) {
+    self.LocalPath = arg1
+    self.UrlPath = arg2
+}
+
 func Lns_lnsservlet_init() {
     if init_lnsservlet { return }
     init_lnsservlet = true
