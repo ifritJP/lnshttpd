@@ -1,8 +1,8 @@
-import lnshttpd.lnsservlet;
+import lnsservlet;
 
 class goInStream extend (lnsservlet.inStream) {
    let reader:stem;
-   pub fn read(size:int):str!,str {
+   pub fn read(size:int) mut :str!,str {
       return nil,"";
    }
    pub fn readAll():str!,str {

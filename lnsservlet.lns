@@ -1,10 +1,37 @@
 pub interface inStream {
-   pub fn read(size:int):str!,str;
-   pub fn readAll():str!,str;
+   pub fn read(size:int) mut : str!,str;
+   pub fn readAll() mut :str!,str;
 }
 
 pub interface outStream {
-   pub fn write(bin:str):str;
+   pub fn write(bin:str) mut : str;
+}
+
+pub class luaInStream extend (inStream) {
+   let mut stream:iStream;
+   fn readStream( mode:stem ) mut : str!,str {
+      if! let bin = self.stream.read( mode ) {
+         return bin, "";
+      }
+      return nil, "err";
+   }
+   pub fn read(size:int) mut :str!,str {
+      return self.readStream( size )**;
+   }
+   pub fn readAll() mut :str!,str {
+      return self.readStream( "*a" )**;
+   }
+}
+
+pub class luaOutStream extend (outStream) {
+   let mut stream:oStream;
+   pub fn write(bin:str) mut : str {
+      let _, err = self.stream.write( bin );
+      when! err {
+         return err;
+      }
+      return "";
+   }
 }
 
 pub form writerFunc( stream:outStream );

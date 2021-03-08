@@ -26,6 +26,117 @@ func Lns_cast2Lnsservlet_outStream( obj LnsAny ) LnsAny {
     return nil
 }
 
+// declaration Class -- luaInStream
+type Lnsservlet_luaInStreamMtd interface {
+    Read(arg1 LnsInt)(LnsAny, string)
+    ReadAll()(LnsAny, string)
+    readStream(arg1 LnsAny)(LnsAny, string)
+}
+type Lnsservlet_luaInStream struct {
+    stream Lns_iStream
+    FP Lnsservlet_luaInStreamMtd
+}
+func Lnsservlet_luaInStream2Stem( obj LnsAny ) LnsAny {
+    if obj == nil {
+        return nil
+    }
+    return obj.(*Lnsservlet_luaInStream).FP
+}
+type Lnsservlet_luaInStreamDownCast interface {
+    ToLnsservlet_luaInStream() *Lnsservlet_luaInStream
+}
+func Lnsservlet_luaInStreamDownCastF( multi ...LnsAny ) LnsAny {
+    if len( multi ) == 0 { return nil }
+    obj := multi[ 0 ]
+    if ddd, ok := multi[ 0 ].([]LnsAny); ok { obj = ddd[0] }
+    work, ok := obj.(Lnsservlet_luaInStreamDownCast)
+    if ok { return work.ToLnsservlet_luaInStream() }
+    return nil
+}
+func (obj *Lnsservlet_luaInStream) ToLnsservlet_luaInStream() *Lnsservlet_luaInStream {
+    return obj
+}
+func NewLnsservlet_luaInStream(arg1 Lns_iStream) *Lnsservlet_luaInStream {
+    obj := &Lnsservlet_luaInStream{}
+    obj.FP = obj
+    obj.InitLnsservlet_luaInStream(arg1)
+    return obj
+}
+func (self *Lnsservlet_luaInStream) InitLnsservlet_luaInStream(arg1 Lns_iStream) {
+    self.stream = arg1
+}
+// 12: decl @lnsservlet.luaInStream.readStream
+func (self *Lnsservlet_luaInStream) readStream(mode LnsAny)(LnsAny, string) {
+    {
+        _bin := self.stream.Read(mode)
+        if _bin != nil {
+            bin := _bin.(string)
+            return bin, ""
+        }
+    }
+    return nil, "err"
+}
+
+// 18: decl @lnsservlet.luaInStream.read
+func (self *Lnsservlet_luaInStream) Read(size LnsInt)(LnsAny, string) {
+    return self.FP.readStream(size)
+}
+
+// 21: decl @lnsservlet.luaInStream.readAll
+func (self *Lnsservlet_luaInStream) ReadAll()(LnsAny, string) {
+    return self.FP.readStream("*a")
+}
+
+
+// declaration Class -- luaOutStream
+type Lnsservlet_luaOutStreamMtd interface {
+    Write(arg1 string) string
+}
+type Lnsservlet_luaOutStream struct {
+    stream Lns_oStream
+    FP Lnsservlet_luaOutStreamMtd
+}
+func Lnsservlet_luaOutStream2Stem( obj LnsAny ) LnsAny {
+    if obj == nil {
+        return nil
+    }
+    return obj.(*Lnsservlet_luaOutStream).FP
+}
+type Lnsservlet_luaOutStreamDownCast interface {
+    ToLnsservlet_luaOutStream() *Lnsservlet_luaOutStream
+}
+func Lnsservlet_luaOutStreamDownCastF( multi ...LnsAny ) LnsAny {
+    if len( multi ) == 0 { return nil }
+    obj := multi[ 0 ]
+    if ddd, ok := multi[ 0 ].([]LnsAny); ok { obj = ddd[0] }
+    work, ok := obj.(Lnsservlet_luaOutStreamDownCast)
+    if ok { return work.ToLnsservlet_luaOutStream() }
+    return nil
+}
+func (obj *Lnsservlet_luaOutStream) ToLnsservlet_luaOutStream() *Lnsservlet_luaOutStream {
+    return obj
+}
+func NewLnsservlet_luaOutStream(arg1 Lns_oStream) *Lnsservlet_luaOutStream {
+    obj := &Lnsservlet_luaOutStream{}
+    obj.FP = obj
+    obj.InitLnsservlet_luaOutStream(arg1)
+    return obj
+}
+func (self *Lnsservlet_luaOutStream) InitLnsservlet_luaOutStream(arg1 Lns_oStream) {
+    self.stream = arg1
+}
+// 28: decl @lnsservlet.luaOutStream.write
+func (self *Lnsservlet_luaOutStream) Write(bin string) string {
+    var err LnsAny
+    _,err = self.stream.Write(bin)
+    if err != nil{
+        err_44 := err.(string)
+        return err_44
+    }
+    return ""
+}
+
+
 // declaration Class -- ResponseInfo
 type Lnsservlet_ResponseInfoMtd interface {
 }
@@ -62,7 +173,7 @@ func NewLnsservlet_ResponseInfo() *Lnsservlet_ResponseInfo {
     obj.InitLnsservlet_ResponseInfo()
     return obj
 }
-// 18: DeclConstr
+// 45: DeclConstr
 func (self *Lnsservlet_ResponseInfo) InitLnsservlet_ResponseInfo() {
     self.StatusCode = 200
     

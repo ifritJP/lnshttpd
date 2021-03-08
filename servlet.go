@@ -4,11 +4,16 @@ import . "github.com/ifritJP/LuneScript/src/lune/base/runtime_go"
 import "net/http"
 import "fmt"
 import "log"
+import "sync"
+
+var EnvMutex sync.Mutex
 
 
 func handleMain(
     resp http.ResponseWriter, req *http.Request,
     handler func ( req *Lnsservlet_RequestInfo ) *Lnsservlet_ResponseInfo ) {
+
+    EnvMutex.Lock()
     
     // ヘッダとステータスコードをセットする
     reqInfo := NewLnsservlet_RequestInfo(
@@ -23,6 +28,8 @@ func handleMain(
     } else {
         fmt.Fprintf( resp, "%s", info.Txt )
     }
+
+    EnvMutex.Unlock()
 }
 
 func Start( port int, infoList *LnsList, hostingList *LnsList ) {
@@ -56,5 +63,4 @@ func Start( port int, infoList *LnsList, hostingList *LnsList ) {
     }
     
     log.Fatal(http.ListenAndServe( fmt.Sprintf( ":%d", port ), nil))
-    
 }

@@ -94,6 +94,75 @@ function outStream:__init(  )
 end
 
 
+local luaInStream = {}
+setmetatable( luaInStream, { ifList = {inStream,} } )
+_moduleObj.luaInStream = luaInStream
+function luaInStream:readStream( mode )
+
+   do
+      local bin = self.stream:read( mode )
+      if bin ~= nil then
+         return bin, ""
+      end
+   end
+   
+   return nil, "err"
+end
+function luaInStream:read( size )
+
+   return self:readStream( size )
+end
+function luaInStream:readAll(  )
+
+   return self:readStream( "*a" )
+end
+function luaInStream.setmeta( obj )
+  setmetatable( obj, { __index = luaInStream  } )
+end
+function luaInStream.new( stream )
+   local obj = {}
+   luaInStream.setmeta( obj )
+   if obj.__init then
+      obj:__init( stream )
+   end
+   return obj
+end
+function luaInStream:__init( stream )
+
+   self.stream = stream
+end
+
+
+local luaOutStream = {}
+setmetatable( luaOutStream, { ifList = {outStream,} } )
+_moduleObj.luaOutStream = luaOutStream
+function luaOutStream:write( bin )
+
+   local _
+   local _42, err = self.stream:write( bin )
+   if err ~= nil then
+      return err
+   end
+   
+   return ""
+end
+function luaOutStream.setmeta( obj )
+  setmetatable( obj, { __index = luaOutStream  } )
+end
+function luaOutStream.new( stream )
+   local obj = {}
+   luaOutStream.setmeta( obj )
+   if obj.__init then
+      obj:__init( stream )
+   end
+   return obj
+end
+function luaOutStream:__init( stream )
+
+   self.stream = stream
+end
+
+
 
 
 local ResponseInfo = {}
