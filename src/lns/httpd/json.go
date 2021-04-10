@@ -1,4 +1,4 @@
-package lnshttpd
+package httpd
 
 import . "github.com/ifritJP/LuneScript/src/lune/base/runtime_go"
 //import "fmt"

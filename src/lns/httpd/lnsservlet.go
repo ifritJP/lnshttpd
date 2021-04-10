@@ -1,5 +1,5 @@
 // This code is transcompiled by LuneScript.
-package lns.httpd.lnshttpd
+package httpd
 import . "github.com/ifritJP/LuneScript/src/lune/base/runtime_go"
 var init_lnsservlet bool
 var lnsservlet__mod__ string
