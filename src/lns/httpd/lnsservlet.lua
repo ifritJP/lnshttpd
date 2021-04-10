@@ -1,6 +1,6 @@
---lnsservlet.lns
+--lns/httpd/lnsservlet.lns
 local _moduleObj = {}
-local __mod__ = '@lnsservlet'
+local __mod__ = '@lns.@httpd.@lnsservlet'
 local _lune = {}
 if _lune3 then
    _lune = _lune3
@@ -139,7 +139,7 @@ _moduleObj.luaOutStream = luaOutStream
 function luaOutStream:write( bin )
 
    local _
-   local _42, err = self.stream:write( bin )
+   local _44, err = self.stream:write( bin )
    if err ~= nil then
       return err
    end

@@ -1,0 +1,5 @@
+help:
+	$(MAKE) help
+
+.DEFAULT:
+	$(MAKE) $@ LNSC=/home/hoge/work/LuneScript/src/lnsc

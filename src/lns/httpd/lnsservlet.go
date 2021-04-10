@@ -1,5 +1,5 @@
 // This code is transcompiled by LuneScript.
-package lnshttpd
+package lns.httpd.lnshttpd
 import . "github.com/ifritJP/LuneScript/src/lune/base/runtime_go"
 var init_lnsservlet bool
 var lnsservlet__mod__ string
@@ -65,7 +65,7 @@ func NewLnsservlet_luaInStream(arg1 Lns_iStream) *Lnsservlet_luaInStream {
 func (self *Lnsservlet_luaInStream) InitLnsservlet_luaInStream(arg1 Lns_iStream) {
     self.stream = arg1
 }
-// 12: decl @lnsservlet.luaInStream.readStream
+// 12: decl @lns.@httpd.@lnsservlet.luaInStream.readStream
 func (self *Lnsservlet_luaInStream) readStream(mode LnsAny)(LnsAny, string) {
     {
         _bin := self.stream.Read(mode)
@@ -77,12 +77,12 @@ func (self *Lnsservlet_luaInStream) readStream(mode LnsAny)(LnsAny, string) {
     return nil, "err"
 }
 
-// 18: decl @lnsservlet.luaInStream.read
+// 18: decl @lns.@httpd.@lnsservlet.luaInStream.read
 func (self *Lnsservlet_luaInStream) Read(size LnsInt)(LnsAny, string) {
     return self.FP.readStream(size)
 }
 
-// 21: decl @lnsservlet.luaInStream.readAll
+// 21: decl @lns.@httpd.@lnsservlet.luaInStream.readAll
 func (self *Lnsservlet_luaInStream) ReadAll()(LnsAny, string) {
     return self.FP.readStream("*a")
 }
@@ -125,13 +125,13 @@ func NewLnsservlet_luaOutStream(arg1 Lns_oStream) *Lnsservlet_luaOutStream {
 func (self *Lnsservlet_luaOutStream) InitLnsservlet_luaOutStream(arg1 Lns_oStream) {
     self.stream = arg1
 }
-// 28: decl @lnsservlet.luaOutStream.write
+// 28: decl @lns.@httpd.@lnsservlet.luaOutStream.write
 func (self *Lnsservlet_luaOutStream) Write(bin string) string {
     var err LnsAny
     _,err = self.stream.Write(bin)
     if err != nil{
-        err_44 := err.(string)
-        return err_44
+        err_46 := err.(string)
+        return err_46
     }
     return ""
 }
@@ -310,7 +310,7 @@ func (self *Lnsservlet_HostingInfo) InitLnsservlet_HostingInfo(arg1 string, arg2
 func Lns_lnsservlet_init() {
     if init_lnsservlet { return }
     init_lnsservlet = true
-    lnsservlet__mod__ = "@lnsservlet"
+    lnsservlet__mod__ = "@lns.@httpd.@lnsservlet"
     Lns_InitMod()
 }
 func init() {

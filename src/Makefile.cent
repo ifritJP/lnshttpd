@@ -1,0 +1,9 @@
+# -*-makefile-*-
+LNSC=lua5.3 ~/.nca-package/project-emacs/packages/tool/LuneScript/src/lune/base/base.lua
+LUA_PATH=/usr/local/share/lua/5.3/?.lua;/usr/local/share/lua/5.3/?/init.lua;/usr/local/lib/lua/5.3/?.lua;/usr/local/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua;/home/nca/.nca-package/project-emacs/packages/tool/LuneScript/src/?.lua
+
+help:
+	$(MAKE) $@
+
+.DEFAULT:
+	LUA_PATH="$(LUA_PATH)" $(MAKE) $@ LNSC="$(LNSC)"
