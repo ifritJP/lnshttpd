@@ -53,7 +53,7 @@ pub class ResponseInfo {
 pub class RequestInfo {
    pub let Method:str;
    pub let Url:str;
-   pub let Header:Map<str,List<str>>;
+   pub let Header:&Map<str,&List<str>>;
    pub let mut Reader:inStream;
 }
 
