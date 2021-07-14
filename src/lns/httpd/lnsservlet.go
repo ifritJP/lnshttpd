@@ -3,11 +3,44 @@ package httpd
 import . "github.com/ifritJP/LuneScript/src/lune/base/runtime_go"
 var init_lnsservlet bool
 var lnsservlet__mod__ string
-type Lnsservlet_writerFunc func (arg1 Lnsservlet_outStream)
-type Lnsservlet_handlerFunc func (arg1 *Lnsservlet_RequestInfo) *Lnsservlet_ResponseInfo
+type Lnsservlet_writerFunc func (_env *LnsEnv, arg1 Lnsservlet_outStream)
+type Lnsservlet_handlerFunc func (_env *LnsEnv, arg1 *Lnsservlet_RequestInfo) *Lnsservlet_ResponseInfo
+// for 29
+func lnsservlet_convExp0_239(arg1 []LnsAny) (LnsAny, LnsAny) {
+    return Lns_getFromMulti( arg1, 0 ), Lns_getFromMulti( arg1, 1 )
+}
+// 12: decl @lns.@httpd.@lnsservlet.luaInStream.readStream
+func (self *Lnsservlet_luaInStream) readStream(_env *LnsEnv, mode LnsAny)(LnsAny, string) {
+    {
+        _bin := self.stream.Read(_env, mode)
+        if !Lns_IsNil( _bin ) {
+            bin := _bin.(string)
+            return bin, ""
+        }
+    }
+    return nil, "err"
+}
+// 18: decl @lns.@httpd.@lnsservlet.luaInStream.read
+func (self *Lnsservlet_luaInStream) Read(_env *LnsEnv, size LnsInt)(LnsAny, string) {
+    return self.FP.readStream(_env, size)
+}
+// 21: decl @lns.@httpd.@lnsservlet.luaInStream.readAll
+func (self *Lnsservlet_luaInStream) ReadAll(_env *LnsEnv)(LnsAny, string) {
+    return self.FP.readStream(_env, "*a")
+}
+// 28: decl @lns.@httpd.@lnsservlet.luaOutStream.write
+func (self *Lnsservlet_luaOutStream) Write(_env *LnsEnv, bin string) string {
+    var err LnsAny
+    _,err = self.stream.Write(_env, bin)
+    if err != nil{
+        err_74 := err.(string)
+        return err_74
+    }
+    return ""
+}
 type Lnsservlet_inStream interface {
-        Read(arg1 LnsInt)(LnsAny, string)
-        ReadAll()(LnsAny, string)
+        Read(_env *LnsEnv, arg1 LnsInt)(LnsAny, string)
+        ReadAll(_env *LnsEnv)(LnsAny, string)
 }
 func Lns_cast2Lnsservlet_inStream( obj LnsAny ) LnsAny {
     if _, ok := obj.(Lnsservlet_inStream); ok { 
@@ -17,7 +50,7 @@ func Lns_cast2Lnsservlet_inStream( obj LnsAny ) LnsAny {
 }
 
 type Lnsservlet_outStream interface {
-        Write(arg1 string) string
+        Write(_env *LnsEnv, arg1 string) string
 }
 func Lns_cast2Lnsservlet_outStream( obj LnsAny ) LnsAny {
     if _, ok := obj.(Lnsservlet_outStream); ok { 
@@ -28,9 +61,9 @@ func Lns_cast2Lnsservlet_outStream( obj LnsAny ) LnsAny {
 
 // declaration Class -- luaInStream
 type Lnsservlet_luaInStreamMtd interface {
-    Read(arg1 LnsInt)(LnsAny, string)
-    ReadAll()(LnsAny, string)
-    readStream(arg1 LnsAny)(LnsAny, string)
+    Read(_env *LnsEnv, arg1 LnsInt)(LnsAny, string)
+    ReadAll(_env *LnsEnv)(LnsAny, string)
+    readStream(_env *LnsEnv, arg1 LnsAny)(LnsAny, string)
 }
 type Lnsservlet_luaInStream struct {
     stream Lns_iStream
@@ -56,41 +89,19 @@ func Lnsservlet_luaInStreamDownCastF( multi ...LnsAny ) LnsAny {
 func (obj *Lnsservlet_luaInStream) ToLnsservlet_luaInStream() *Lnsservlet_luaInStream {
     return obj
 }
-func NewLnsservlet_luaInStream(arg1 Lns_iStream) *Lnsservlet_luaInStream {
+func NewLnsservlet_luaInStream(_env *LnsEnv, arg1 Lns_iStream) *Lnsservlet_luaInStream {
     obj := &Lnsservlet_luaInStream{}
     obj.FP = obj
-    obj.InitLnsservlet_luaInStream(arg1)
+    obj.InitLnsservlet_luaInStream(_env, arg1)
     return obj
 }
-func (self *Lnsservlet_luaInStream) InitLnsservlet_luaInStream(arg1 Lns_iStream) {
+func (self *Lnsservlet_luaInStream) InitLnsservlet_luaInStream(_env *LnsEnv, arg1 Lns_iStream) {
     self.stream = arg1
 }
-// 12: decl @lns.@httpd.@lnsservlet.luaInStream.readStream
-func (self *Lnsservlet_luaInStream) readStream(mode LnsAny)(LnsAny, string) {
-    {
-        _bin := self.stream.Read(mode)
-        if _bin != nil {
-            bin := _bin.(string)
-            return bin, ""
-        }
-    }
-    return nil, "err"
-}
-
-// 18: decl @lns.@httpd.@lnsservlet.luaInStream.read
-func (self *Lnsservlet_luaInStream) Read(size LnsInt)(LnsAny, string) {
-    return self.FP.readStream(size)
-}
-
-// 21: decl @lns.@httpd.@lnsservlet.luaInStream.readAll
-func (self *Lnsservlet_luaInStream) ReadAll()(LnsAny, string) {
-    return self.FP.readStream("*a")
-}
-
 
 // declaration Class -- luaOutStream
 type Lnsservlet_luaOutStreamMtd interface {
-    Write(arg1 string) string
+    Write(_env *LnsEnv, arg1 string) string
 }
 type Lnsservlet_luaOutStream struct {
     stream Lns_oStream
@@ -116,26 +127,15 @@ func Lnsservlet_luaOutStreamDownCastF( multi ...LnsAny ) LnsAny {
 func (obj *Lnsservlet_luaOutStream) ToLnsservlet_luaOutStream() *Lnsservlet_luaOutStream {
     return obj
 }
-func NewLnsservlet_luaOutStream(arg1 Lns_oStream) *Lnsservlet_luaOutStream {
+func NewLnsservlet_luaOutStream(_env *LnsEnv, arg1 Lns_oStream) *Lnsservlet_luaOutStream {
     obj := &Lnsservlet_luaOutStream{}
     obj.FP = obj
-    obj.InitLnsservlet_luaOutStream(arg1)
+    obj.InitLnsservlet_luaOutStream(_env, arg1)
     return obj
 }
-func (self *Lnsservlet_luaOutStream) InitLnsservlet_luaOutStream(arg1 Lns_oStream) {
+func (self *Lnsservlet_luaOutStream) InitLnsservlet_luaOutStream(_env *LnsEnv, arg1 Lns_oStream) {
     self.stream = arg1
 }
-// 28: decl @lns.@httpd.@lnsservlet.luaOutStream.write
-func (self *Lnsservlet_luaOutStream) Write(bin string) string {
-    var err LnsAny
-    _,err = self.stream.Write(bin)
-    if err != nil{
-        err_46 := err.(string)
-        return err_46
-    }
-    return ""
-}
-
 
 // declaration Class -- ResponseInfo
 type Lnsservlet_ResponseInfoMtd interface {
@@ -167,22 +167,18 @@ func Lnsservlet_ResponseInfoDownCastF( multi ...LnsAny ) LnsAny {
 func (obj *Lnsservlet_ResponseInfo) ToLnsservlet_ResponseInfo() *Lnsservlet_ResponseInfo {
     return obj
 }
-func NewLnsservlet_ResponseInfo() *Lnsservlet_ResponseInfo {
+func NewLnsservlet_ResponseInfo(_env *LnsEnv) *Lnsservlet_ResponseInfo {
     obj := &Lnsservlet_ResponseInfo{}
     obj.FP = obj
-    obj.InitLnsservlet_ResponseInfo()
+    obj.InitLnsservlet_ResponseInfo(_env)
     return obj
 }
 // 45: DeclConstr
-func (self *Lnsservlet_ResponseInfo) InitLnsservlet_ResponseInfo() {
+func (self *Lnsservlet_ResponseInfo) InitLnsservlet_ResponseInfo(_env *LnsEnv) {
     self.StatusCode = 200
-    
     self.Header = NewLnsMap( map[LnsAny]LnsAny{})
-    
     self.Writer = nil
-    
     self.Txt = ""
-    
 }
 
 
@@ -216,13 +212,13 @@ func Lnsservlet_RequestInfoDownCastF( multi ...LnsAny ) LnsAny {
 func (obj *Lnsservlet_RequestInfo) ToLnsservlet_RequestInfo() *Lnsservlet_RequestInfo {
     return obj
 }
-func NewLnsservlet_RequestInfo(arg1 string, arg2 string, arg3 *LnsMap, arg4 Lnsservlet_inStream) *Lnsservlet_RequestInfo {
+func NewLnsservlet_RequestInfo(_env *LnsEnv, arg1 string, arg2 string, arg3 *LnsMap, arg4 Lnsservlet_inStream) *Lnsservlet_RequestInfo {
     obj := &Lnsservlet_RequestInfo{}
     obj.FP = obj
-    obj.InitLnsservlet_RequestInfo(arg1, arg2, arg3, arg4)
+    obj.InitLnsservlet_RequestInfo(_env, arg1, arg2, arg3, arg4)
     return obj
 }
-func (self *Lnsservlet_RequestInfo) InitLnsservlet_RequestInfo(arg1 string, arg2 string, arg3 *LnsMap, arg4 Lnsservlet_inStream) {
+func (self *Lnsservlet_RequestInfo) InitLnsservlet_RequestInfo(_env *LnsEnv, arg1 string, arg2 string, arg3 *LnsMap, arg4 Lnsservlet_inStream) {
     self.Method = arg1
     self.Url = arg2
     self.Header = arg3
@@ -257,13 +253,13 @@ func Lnsservlet_HandlerInfoDownCastF( multi ...LnsAny ) LnsAny {
 func (obj *Lnsservlet_HandlerInfo) ToLnsservlet_HandlerInfo() *Lnsservlet_HandlerInfo {
     return obj
 }
-func NewLnsservlet_HandlerInfo(arg1 string, arg2 Lnsservlet_handlerFunc) *Lnsservlet_HandlerInfo {
+func NewLnsservlet_HandlerInfo(_env *LnsEnv, arg1 string, arg2 Lnsservlet_handlerFunc) *Lnsservlet_HandlerInfo {
     obj := &Lnsservlet_HandlerInfo{}
     obj.FP = obj
-    obj.InitLnsservlet_HandlerInfo(arg1, arg2)
+    obj.InitLnsservlet_HandlerInfo(_env, arg1, arg2)
     return obj
 }
-func (self *Lnsservlet_HandlerInfo) InitLnsservlet_HandlerInfo(arg1 string, arg2 Lnsservlet_handlerFunc) {
+func (self *Lnsservlet_HandlerInfo) InitLnsservlet_HandlerInfo(_env *LnsEnv, arg1 string, arg2 Lnsservlet_handlerFunc) {
     self.Path = arg1
     self.Handler = arg2
 }
@@ -296,18 +292,18 @@ func Lnsservlet_HostingInfoDownCastF( multi ...LnsAny ) LnsAny {
 func (obj *Lnsservlet_HostingInfo) ToLnsservlet_HostingInfo() *Lnsservlet_HostingInfo {
     return obj
 }
-func NewLnsservlet_HostingInfo(arg1 string, arg2 string) *Lnsservlet_HostingInfo {
+func NewLnsservlet_HostingInfo(_env *LnsEnv, arg1 string, arg2 string) *Lnsservlet_HostingInfo {
     obj := &Lnsservlet_HostingInfo{}
     obj.FP = obj
-    obj.InitLnsservlet_HostingInfo(arg1, arg2)
+    obj.InitLnsservlet_HostingInfo(_env, arg1, arg2)
     return obj
 }
-func (self *Lnsservlet_HostingInfo) InitLnsservlet_HostingInfo(arg1 string, arg2 string) {
+func (self *Lnsservlet_HostingInfo) InitLnsservlet_HostingInfo(_env *LnsEnv, arg1 string, arg2 string) {
     self.LocalPath = arg1
     self.UrlPath = arg2
 }
 
-func Lns_lnsservlet_init() {
+func Lns_lnsservlet_init(_env *LnsEnv) {
     if init_lnsservlet { return }
     init_lnsservlet = true
     lnsservlet__mod__ = "@lns.@httpd.@lnsservlet"

@@ -2,8 +2,8 @@
 local _moduleObj = {}
 local __mod__ = '@lns.@httpd.@lnsservlet'
 local _lune = {}
-if _lune3 then
-   _lune = _lune3
+if _lune6 then
+   _lune = _lune6
 end
 function _lune.__isInstanceOf( obj, class )
    while obj do
@@ -55,8 +55,8 @@ function _lune.__Cast( obj, kind, class )
    return nil
 end
 
-if not _lune3 then
-   _lune3 = _lune
+if not _lune6 then
+   _lune6 = _lune
 end
 local inStream = {}
 _moduleObj.inStream = inStream
@@ -139,7 +139,7 @@ _moduleObj.luaOutStream = luaOutStream
 function luaOutStream:write( bin )
 
    local _
-   local _44, err = self.stream:write( bin )
+   local _1, err = self.stream:write( bin )
    if err ~= nil then
       return err
    end
