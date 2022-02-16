@@ -1,0 +1,38 @@
+import go/github:com.ifritJP.lnshttpd.src.lns.httpd.lnsservlet;
+
+pub fn handle( req:lnsservlet.RequestInfo ) : lnsservlet.ResponseInfo
+{
+   print( __func__, req.Url );
+
+   // レスポンスヘッダを設定
+   let mut resp = new lnsservlet.ResponseInfo();
+   resp.Header[ "HogeHeader" ] = [ "HogeVal" ];
+
+   // request のデータを取得し、レスポンスを設定する
+
+   resp.StatusCode = 200;
+
+   resp.Writer = fn ( stream:lnsservlet.outStream ) {
+      // json.writeJsonObj( stream, infoSet );
+      stream.write( "resp1" );
+      stream.write( "resp2" );
+   };
+   // resp.Txt = "abc";
+   return resp;
+}
+
+pub fn start( port:int ) {
+   module servlet require "go/github:com.ifritJP.lnshttpd.src.lns.httpd.servlet" of "" {
+      pub static fn Start( listenPort:int, handlerList: &List<&lnsservlet.HandlerInfo>,
+                           hostingList:&List<&lnsservlet.HostingInfo> );
+   }
+
+   servlet.Start( port,
+                  [ new lnsservlet.HandlerInfo( "/code", handle ) ],
+                  [ new lnsservlet.HostingInfo( "./indexableContents", "/contents" ) ] );
+}
+
+pub fn __main( argList:&List<str> ) : int {
+   start( 8080 );
+   return 0;
+}

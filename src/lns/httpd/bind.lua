@@ -1,9 +1,9 @@
---lnshttpd/bind.lns
+--lns/httpd/bind.lns
 local _moduleObj = {}
-local __mod__ = '@lnshttpd.@bind'
+local __mod__ = '@lns.@httpd.@bind'
 local _lune = {}
-if _lune3 then
-   _lune = _lune3
+if _lune6 then
+   _lune = _lune6
 end
 function _lune.loadModule( mod )
    if __luneScript then
@@ -62,10 +62,10 @@ function _lune.__Cast( obj, kind, class )
    return nil
 end
 
-if not _lune3 then
-   _lune3 = _lune
+if not _lune6 then
+   _lune6 = _lune
 end
-local lnsservlet = _lune.loadModule( 'lnshttpd.lnsservlet' )
+local lnsservlet = _lune.loadModule( 'lns.httpd.lnsservlet' )
 
 local goInStream = {}
 setmetatable( goInStream, { ifList = {lnsservlet.inStream,} } )
@@ -119,8 +119,8 @@ end
 
 do
    local _
-   local _67 = goInStream.new(0)
-   local _68 = goOutStream.new(0)
+   local _1 = goInStream.new(0)
+   local _2 = goOutStream.new(0)
 end
 
 
